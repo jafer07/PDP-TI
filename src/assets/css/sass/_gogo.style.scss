@@ -313,8 +313,8 @@ hr {
 }
 
 .logo-single {
-  width: 110px;
-  height: 35px;
+  width: 100px;
+  height: 100px;
   background: url($logoPath) no-repeat;
   background-position: center center;
   display: inline-block;
@@ -1698,23 +1698,23 @@ button {
   }
 
   .navbar-logo {
-    width: 110px;
-    height: 35px;
+    width: 100px;
+    height: 100px;
     position: absolute;
     left: 0;
     right: 0;
     margin: 0 auto;
 
     .logo {
-      width: 120%;
-      height: 120%;
+      width: 100px;
+      height: 100px;
       background: url($logoPath) no-repeat;
       background-position: center center;
     }
 
     .logo-mobile {
-      width: 100%;
-      height: 100%;
+      width: 100px;
+      height: 100px;
       background: url($logoPathMobile) no-repeat;
       background-position: center center;
       background-size: contain;
