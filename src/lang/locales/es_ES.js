@@ -29,7 +29,7 @@ module.exports = {
   /* 03.Menú */
   "menu.app": "Inicio",
   "menu.dashboards": "Tableros",
-  "menu.gogo": "Gogo",
+  "menu.gogo": "{PDP}",
   "menu.start": "Comienzo",
   "menu.second-menu": "Segundo menú",
   "menu.second": "Segundo",
