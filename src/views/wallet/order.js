@@ -19,12 +19,6 @@ class OrderDetails extends Component {
       return (
       <div className="App">
         <header className="App-header">
-        <div id="loader_div" class="loader_div">
-            {web3State.isConnected && "Connected!\n"}
-            {web3State.isLoading && "Loading...\n"}
-            {web3State.error && `Connection error: ${web3State.error.message}\n`}
-            Web3 version: {web3.version}
-          </div>
           { loading && (
             <div>
               Contacting provider...
@@ -54,7 +48,7 @@ class OrderDetails extends Component {
              </div>
           </div>
           )}
-	
+
         </header>
       </div>
       );

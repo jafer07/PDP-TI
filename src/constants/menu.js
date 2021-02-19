@@ -1,6 +1,6 @@
 const data = [
   {
-    id: "gogo",
+    id: "dashboard",
     icon: "iconsminds-wallet",
     label: "Dashboard",
     to: "/wallet/dashboard",
@@ -8,31 +8,31 @@ const data = [
     subs: []
   },
   {
-    id: "secondmenu",
+    id: "account",
     icon: "iconsminds-book",
     label: "Account",
     to: "/wallet/account",
     newWindow: true
   },
   {
-    id: "blankpage",
+    id: "orders",
     icon: "iconsminds-bucket",
-    label: "Order",
+    label: "Order Requests",
     newWindow: true,
     to: "/wallet/order"
   },
   {
-    id: "test",
+    id: "datasets",
     icon: "iconsminds-book",
-    label: "Dataset",
+    label: "Datasets",
     to: "/wallet/dataset",
     newWindow: true
   },
   {
-    id: "request",
+    id: "apps",
     icon: "iconsminds-book",
-    label: "Request",
-    to: "/wallet/request",
+    label: "Applications",
+    to: "/wallet/apps",
     newWindow: true
   }
 ];

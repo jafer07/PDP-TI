@@ -4,14 +4,22 @@ import { connect } from 'react-redux';
 
 import AppLayout from '../../layout/AppLayout';
 
-const Gogo = React.lazy(() =>
-  import(/* webpackChunkName: "viwes-gogo" */ './gogo')
+const Dashboard = React.lazy(() =>
+  import(/* webpackChunkName: "viwes-gogo" */ '../wallet/dashboard')
 );
-const SecondMenu = React.lazy(() =>
-  import(/* webpackChunkName: "viwes-second-menu" */ './second-menu')
+const Account = React.lazy(() =>
+  import(/* webpackChunkName: "viwes-second-menu" */ '../wallet/account')
 );
-const BlankPage = React.lazy(() =>
-  import(/* webpackChunkName: "viwes-blank-page" */ './blank-page')
+const Orders = React.lazy(() =>
+  import(/* webpackChunkName: "viwes-blank-page" */ '../wallet/order')
+);
+
+const Datasets = React.lazy(() =>
+  import(/* webpackChunkName: "viwes-blank-page" */ '../wallet/dataset')
+);
+
+const Apps = React.lazy(() =>
+  import(/* webpackChunkName: "viwes-blank-page" */ '../wallet/apps')
 );
 
 class App extends Component {
@@ -23,18 +31,26 @@ class App extends Component {
         <div className="dashboard-wrapper">
           <Suspense fallback={<div className="loading" />}>
             <Switch>
-              <Redirect exact from={`${match.url}/`} to={`${match.url}/gogo`} />
+              <Redirect exact from={`${match.url}/`} to={`${match.url}/dashboard`} />
               <Route
-                path={`${match.url}/gogo`}
-                render={props => <Gogo {...props} />}
+                path={`${match.url}/dashboard`}
+                render={props => <Dashboard {...props} />}
               />
               <Route
-                path={`${match.url}/second-menu`}
-                render={props => <SecondMenu {...props} />}
+                path={`${match.url}/account`}
+                render={props => <Account {...props} />}
               />
               <Route
-                path={`${match.url}/blank-page`}
-                render={props => <BlankPage {...props} />}
+                path={`${match.url}/order`}
+                render={props => <Orders {...props} />}
+              />
+              <Route
+                path={`${match.url}/datasets`}
+                render={props => <Datasets {...props} />}
+              />
+              <Route
+                path={`${match.url}/wallet/apps`}
+                render={props => <Apps {...props} />}
               />
               <Redirect to="/error" />
             </Switch>
