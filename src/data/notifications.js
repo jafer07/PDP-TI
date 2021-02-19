@@ -1,6 +1,6 @@
 const data = [
   {
-    img: '/assets/img/profile-pic-l-2.jpg',
+    img: '/assets/img/q_profile_pic_2.png',
     title: 'Joisse Kaycee just sent a new comment!',
     date: '09.04.2018 - 12:45',
     id: 1

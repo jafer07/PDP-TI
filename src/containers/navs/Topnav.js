@@ -286,9 +286,9 @@ class TopNav extends Component {
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
-                <span className="name mr-1">Sarah Kortney</span>
+                <span className="name mr-1">Qasim Hussain</span>
                 <span>
-                  <img alt="Profile" src="/assets/img/profile-pic-l.jpg" />
+                  <img alt="Profile" src="/assets/img/q_profile_pic_2.png" />
                 </span>
               </DropdownToggle>
               <DropdownMenu className="mt-3" right>
