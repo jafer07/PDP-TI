@@ -119,16 +119,20 @@ function App(props) {
 
     const appsDeployNameInput = document.getElementById("apps-deployname-input");
     const appsDeployMultiaddrInput = document.getElementById("apps-deploymultiaddr-input");
+    const appsDeployMREnclaveInput = document.getElementById("app-deploy-mrenclave-input");
     const appsDeployChecksumInput = document.getElementById("apps-deploychecksum-input");
+
     const appsDeployButton = document.getElementById("apps-deploy-button");
     const appsDeployError = document.getElementById("apps-deploy-error");
     const appsDeployOutput = document.getElementById("apps-deploy-output");
 
     const appRunDatasetMultiaddrInput = document.getElementById("app-run-dataset-address-input");
     const appRunPriceInput = document.getElementById("app-run-price-input");
+    const appRunAddressInput = document.getElementById("app-run-address-input");
     const appRunButton = document.getElementById("app-run-button");
     const appRunError = document.getElementById("app-run-error");
     const appRunOutput = document.getElementById("app-run-output");
+
 
     useEffect(() => {
       async function fetchData() {
@@ -300,6 +304,7 @@ function App(props) {
 
     async function handlePublishDataset() {
       try {
+          console.log('heere:');
           sellPublishButton.disabled = true;
           sellPublishError.innerText = "";
           sellPublishOutput.innerText = "";
@@ -307,15 +312,20 @@ function App(props) {
           const datasetprice = sellDatasetPriceInput.value;
           const volume = sellDatasetVolumeInput.value;
           const apprestrict = sellDatasetApprestrictInput.value;
-          const signedOrder = await iexec.order.signDatasetorder(
-            await iexec.order.createDatasetorder({
+          const datasetOrder = await iexec.order.createDatasetorder({
               dataset,
               datasetprice,
               volume,
               apprestrict
-            })
-          );
+            });
+          console.log(datasetOrder);
+
+          const signedOrder = await iexec.order.signDatasetorder(datasetOrder);
+          console.log(signedOrder);
+
           const orderHash = await iexec.order.publishDatasetorder(signedOrder);
+          console.log(orderHash);
+
           sellPublishOutput.innerText = `Order published with hash ${orderHash}`;
           sellUnpublishOrderhashInput.value = orderHash;
           sellCancelOrderhashInput.value = orderHash;
@@ -405,119 +415,227 @@ function App(props) {
             }
         }
 
-        async function handleShowAppsByAddress() {
-          try {
-              appsShowButton.disabled = true;
-              appsShowError.innerText = "";
-              appShowOutput.innerText = "";
+      async function handleShowAppsByAddress() {
+        try {
+            appsShowButton.disabled = true;
+            appsShowError.innerText = "";
+            appShowOutput.innerText = "";
 
-              const appAddress = appsShowInput.value;
-              const res = await iexec.app.showApp(appAddress);
+            const appAddress = appsShowInput.value;
+            const res = await iexec.app.showApp(appAddress);
 
-              appShowOutput.innerText = JSON.stringify(res, null, 2);
+            appShowOutput.innerText = JSON.stringify(res, null, 2);
 
-            } catch (error) {
-              appsShowError.innerText = error;
-            } finally {
-              appsShowButton.disabled = false;
-            }
-        }
+          } catch (error) {
+            appsShowError.innerText = error;
+          } finally {
+            appsShowButton.disabled = false;
+          }
+      }
 
-        async function handleShowAppsByIndex() {
-          try {
-              appsShowIndexButton.disabled = true;
-              appsShowIndexError.innerText = "";
-              appsShowIndexOutput.innerText = "";
-              const appIndex = appsIndexInput.value;
-              const res = await iexec.app.showUserApp(
-                appIndex,
-                await iexec.wallet.getAddress()
-              );
-              appsShowIndexOutput.innerText = JSON.stringify(res, null, 2);
+      async function handleShowAppsByIndex() {
+        try {
+            appsShowIndexButton.disabled = true;
+            appsShowIndexError.innerText = "";
+            appsShowIndexOutput.innerText = "";
+            const appIndex = appsIndexInput.value;
+            const res = await iexec.app.showUserApp(
+              appIndex,
+              await iexec.wallet.getAddress()
+            );
+            appsShowIndexOutput.innerText = JSON.stringify(res, null, 2);
 
-            } catch (error) {
-              appsShowIndexError.innerText = error;
-            } finally {
-              appsShowIndexButton.disabled = false;
-            }
-        }
+          } catch (error) {
+            appsShowIndexError.innerText = error;
+          } finally {
+            appsShowIndexButton.disabled = false;
+          }
+      }
 
-        async function handleCountApps() {
-          try {
-              appsCountButton.disabled = true;
-              appsCountError.innerText = "";
-              appsCountOutput.innerText = "";
-              const count = await iexec.app.countUserApps(
-                await iexec.wallet.getAddress()
-              );
-              appsCountOutput.innerText = `total deployed apps ${count}`;
+      async function handleCountApps() {
+        try {
+            appsCountButton.disabled = true;
+            appsCountError.innerText = "";
+            appsCountOutput.innerText = "";
+            const count = await iexec.app.countUserApps(
+              await iexec.wallet.getAddress()
+            );
+            appsCountOutput.innerText = `total deployed apps ${count}`;
 
-            } catch (error) {
-              appsCountError.innerText = error;
-            } finally {
-              appsCountButton.disabled = false;
-            }
-        }
+          } catch (error) {
+            appsCountError.innerText = error;
+          } finally {
+            appsCountButton.disabled = false;
+          }
+      }
 
-        async function handleAppDeploy() {
-          try {
-              appsDeployButton.disabled = true;
-              appsDeployError.innerText = "";
-              appsDeployOutput.innerText = "";
-              const owner = await iexec.wallet.getAddress();
-              const name = appsDeployNameInput.value;
-              const type = "DOCKER"; // only "DOCKER" is supported for now
-              const multiaddr = appsDeployMultiaddrInput.value;
-              const checksum = appsDeployChecksumInput.value;
-              const mrenclave = ""; // used for Scone apps
-              const { address } = await iexec.app.deployApp({
-                owner,
-                name,
-                type,
-                multiaddr,
-                checksum,
-                mrenclave
-              });
-              appsDeployOutput.innerText = `App deployed at address ${address}`;
-              appsShowInput.value = address;
-              refreshUser(iexec)();
-
-            } catch (error) {
-              appsDeployError.innerText = error;
-            } finally {
-              appsDeployButton.disabled = false;
-            }
-        }
-
-        async function handleAppRun() {
-          try {
-            appRunButton.disabled = true;
-            appRunError.innerText = "";
-            appRunOutput.innerText = "";
-
+      async function handleAppDeploy() {
+        try {
+            appsDeployButton.disabled = true;
+            appsDeployError.innerText = "";
+            appsDeployOutput.innerText = "";
             const owner = await iexec.wallet.getAddress();
-            const appDatasetAddress = appRunDatasetMultiaddrInput.value;
-            const appPrice = appRunPriceInput.value;
+            const name = appsDeployNameInput.value;
+            const type = "DOCKER"; // only "DOCKER" is supported for now
+            const multiaddr = appsDeployMultiaddrInput.value;
+            const checksum = appsDeployChecksumInput.value;
+            const mrenclave = appsDeployMREnclaveInput.value; // used for Scone apps
+            const { address } = await iexec.app.deployApp({
+              owner,
+              name,
+              type,
+              multiaddr,
+              checksum,
+              mrenclave
+            });
+            appsDeployOutput.innerText = `App deployed at address ${address}`;
+            appsShowInput.value = address;
+            refreshUser(iexec)();
 
-            // const resp = await iexec.app.runApp({
-            //   owner,
-            //   name,
-            //   type,
-            //   multiaddr,
-            //   checksum,
-            //   mrenclave
-            // });
+          } catch (error) {
+            appsDeployError.innerText = error;
+          } finally {
+            appsDeployButton.disabled = false;
+          }
+      }
 
-            // appRunOutput.innerText = `App Run: ${resp} .`;
+      async function handleAppRun() {
+        try {
+          appRunButton.disabled = true;
+          appRunError.innerText = "";
+          appRunOutput.innerText = "";
 
-            } catch (error) {
-              appRunError.innerText = error;
-            } finally {
-              appRunButton.disabled = false;
-            }
-        }
+          const userAddress = await iexec.wallet.getAddress();
+          const appDatasetAddress = appRunDatasetMultiaddrInput.value;
+          const appPrice = appRunPriceInput.value;
+          const appAddress = appRunAddressInput.value;
+
+          const category = '1'; // TODO: hd to TEE
+          const params = ""; // TODO: hd to none
+
+          if (!checkStorageInitialized()){
+            console.log("not init")
+            initStorage();
+          }
+
+//        publishing app:
+          const app = appDatasetAddress;
+          const appprice = '0'; //TODO: hd to none
+          const volume = '1'; //TODO: hd to n
+          const tag = 'tee';
+//        TODO: could restrict the access to requester only.
+          const signedOrder = await iexec.order.signApporder(
+            await iexec.order.createApporder({
+              app,
+              appprice,
+              volume,
+              tag
+            })
+          );
+          const orderHash = await iexec.order.publishApporder(signedOrder);
+          console.log(`Order published with hash ${orderHash}`)
+
+          const { datasetOrders } = await iexec.orderbook.fetchDatasetOrderbook(appDatasetAddress);
+          const datasetOrder = datasetOrders && datasetOrders[0] && datasetOrders[0].order;
+          if (!datasetOrder) throw Error(`no datasetorder found for the dataset address ${appDatasetAddress}`);
+
+          const { appOrders } = await iexec.orderbook.fetchAppOrderbook(appAddress);
+          const appOrder = appOrders && appOrders[0] && appOrders[0].order;
+          if (!appOrder) throw Error(`no apporder found for app ${appAddress}`);
+
+          const { workerpoolOrders } = await iexec.orderbook.fetchWorkerpoolOrderbook({ category });
+          const workerpoolOrder = workerpoolOrders && workerpoolOrders[0] && workerpoolOrders[0].order;
+          if (!workerpoolOrder) throw Error(`no workerpoolorder found for category ${category}`);
+
+//        TODO : request order
+          const requestOrderToSign = await iexec.order.createRequestorder({
+            app: appOrder.app,
+            appmaxprice: appOrder.appprice,
+            dataset: datasetOrder.dataset,
+            datasetmaxprice: datasetOrder.datasetprice,
+            workerpoolmaxprice: workerpoolOrder.workerpoolprice,
+            requester: userAddress,
+            volume: 1,
+            tag:tag,
+            params: params,
+            category: category
+          });
+
+//        TODO: sign order
+          const requestOrder = await iexec.order.signRequestorder(requestOrderToSign);
+
+//        TODO: match order = find a deal
+          const res = await iexec.order.matchOrders({
+            datasetOrder: datasetOrder,
+            apporder: appOrder,
+            workerpoolorder: workerpoolOrder,
+            requestorder: requestOrder
+          });
+
+          appRunOutput.innerText = JSON.stringify(res, null, 2);
+          console.log(`Order published with dealId ${res.dealid}`)
+          refreshUser(iexec)();
+
+          // appRunOutput.innerText = `App Run: ${resp} .`;
+          } catch (error) {
+            appRunError.innerText = error;
+          } finally {
+            appRunButton.disabled = false;
+          }
+      }
+
+// TODO: as in CLI app run , but might not be needed
+      // const requestorderToSign = await createRequestorder(
+      //    { contracts: chain.contracts, resultProxyURL: chain.resultProxy },
+      //    {
+      //      app: apporder.app,
+      //      appmaxprice: apporder.appprice,
+      //      dataset: datasetorder.dataset,
+      //      datasetmaxprice: datasetorder.datasetprice,
+      //      workerpool: workerpoolorder.workerpool,
+      //      workerpoolmaxprice: workerpoolorder.workerpoolprice,
+      //      requester,
+      //      volume: 1,
+      //      tag,
+      //      category: workerpoolorder.category,
+      //      trust,
+      //      beneficiary: beneficiary || requester,
+      //      callback,
+      //      params,
+      //    },
+      //  );
 
 
+
+    async function initStorage(){
+      try {
+
+        const storageToken = await iexec.storage.defaultStorageLogin();
+        await iexec.storage.pushStorageToken(storageToken, { forceUpdate: true });
+
+        if (!checkStorageInitialized()) throw Error(`unable to init storage`);
+      } catch (error) {
+        // storageInitError.innerText = error;
+      } finally {
+        // storageInitButton.disabled = false;
+      }
+    }
+
+    async function checkStorageInitialized(){
+      const isStorageInitialized  = false;
+      try {
+          isStorageInitialized = await iexec.storage.checkStorageTokenExists(
+          await iexec.wallet.getAddress()
+          );
+          const responseStr = isStorageInitialized
+          ? "initialized"
+          : "not initialized";
+      } catch (error) {
+        const errorMsg = error.message;
+      } finally {
+        return isStorageInitialized;
+      }
+    }
 
 
     return (
@@ -540,7 +658,7 @@ function App(props) {
               />
               <Route
                 path={`${match.url}/dataset`}
-                render={props => <ViewDataSet handleCountUserDatasets={handleCountUserDatasets} handleShowUserDatasets={handleShowUserDatasets} handleShowUserDatasetsByAddress={handleShowUserDatasetsByAddress} web3State={web3State} web3={web3} loading={loading} />}
+                render={props => <ViewDataSet handleCountUserDatasets={handleCountUserDatasets} handleShowUserDatasets={handleShowUserDatasets} handleShowUserDatasetsByAddress={handleShowUserDatasetsByAddress} handleDeployDataset={handleDeployDataset} handlePushSecret={handlePushSecret} handlePublishDataset={handlePublishDataset} handleUnpublishDataset={handleUnpublishDataset} web3State={web3State} web3={web3} loading={loading} />}
               />
               <Route
                 path={`${match.url}/request`}

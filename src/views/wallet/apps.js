@@ -86,6 +86,15 @@ class Apps extends Component {
                       />
                     </div>
                     <div>
+                      <div>
+                        <label for="app-deploy-mrenclave-input">Dataset address</label>
+                        <input
+                          id="app-deploy-mrenclave-input"
+                          type="text"
+                          placeholder="mr enclave"
+                        />
+                      </div>
+                    <div>
                       <label for="apps-deploychecksum-input">App checksum</label>
                       <input
                         id="apps-deploychecksum-input"
@@ -117,6 +126,14 @@ class Apps extends Component {
                         type="number"
                         min="0"
                         placeholder="Price"
+                      />
+                    </div>
+                    <div>
+                      <label for="app-run-address-input">App address</label>
+                      <input
+                        id="buy-appaddress-input"
+                        type="text"
+                        placeholder="App address"
                       />
                     </div>
                     <button id="app-run-button" onClick={handleAppRun}>Run App</button>

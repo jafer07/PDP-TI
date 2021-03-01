@@ -136,7 +136,6 @@ class DataSet extends Component {
                      <input
                        id="sell-datasetaddress-input"
                        type="text"
-                       value=""
                        placeholder="Dataset address"
                      />
                    </div>
@@ -145,7 +144,6 @@ class DataSet extends Component {
                      <input
                        id="sell-datasetprice-input"
                        type="number"
-                       value="1"
                        min="0"
                        placeholder="Price"
                      />
@@ -155,7 +153,6 @@ class DataSet extends Component {
                      <input
                        id="sell-volume-input"
                        type="number"
-                       value="10"
                        min="1"
                        placeholder="Volume"
                      />
@@ -165,11 +162,10 @@ class DataSet extends Component {
                      <input
                        id="sell-apprestrict-input"
                        type="text"
-                       value="0x0000000000000000000000000000000000000000"
                        placeholder="app address"
                      />
                    </div>
-                   <button id="sell-publish-button"  onClick={handlePublishDataset}>PUBLISH SELL ORDER : </button>
+                   <button id="sell-publish-button" onClick={handlePublishDataset}>PUBLISH SELL ORDER</button>
                  </div>
                  <label id="sell-publish-error" class="error"></label>
                  <div id="sell-publish-output"></div>
@@ -180,10 +176,9 @@ class DataSet extends Component {
                    <input
                      id="sell-unpublishhash-input"
                      type="text"
-                     value=""
                      placeholder="Order hash"
                    />
-                   <button id="sell-unpublish-button" disabled>UNPUBLISH ORDER : </button>
+                   <button id="sell-unpublish-button">UNPUBLISH ORDER : </button>
                  </div>
                  <label id="sell-unpublish-error" class="error"></label>
                  <div id="sell-unpublish-output"></div>
@@ -197,7 +192,7 @@ class DataSet extends Component {
                      value=""
                      placeholder="Order hash"
                    />
-                   <button id="sell-cancel-button"  onClick={handleUnpublishDataset}>CANCEL ORDER : </button>
+                   <button id="sell-cancel-button" onClick={handleUnpublishDataset}>CANCEL ORDER : </button>
                  </div>
                  <label id="sell-cancel-error" class="error"></label>
                  <div id="sell-cancel-output"></div>

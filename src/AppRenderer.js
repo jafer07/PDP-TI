@@ -15,13 +15,12 @@ const App = React.lazy(() => import(/* webpackChunkName: "App" */'./App' ));
 
 ReactDOM.render(
   <Provider store={configureStore()}>
-      <Web3Provider 
-        defaultProvider={(cb) => cb(
-          new Web3(
-            // PDP dapp on Portis
-            new Portis("90c7b0fc-d9d2-4879-b67b-53f3fb651609", "goerli").provider
-          )
-        )}
+      <Web3Provider
+        defaultProvider={(cb) => {
+             const ethProvider = new Portis("90c7b0fc-d9d2-4879-b67b-53f3fb651609", "goerli").provider;
+             ethProvider.isMetaMask = true;
+             return cb(new Web3(ethProvider));
+        }}
         loading="Loading..."
         error={(err) => `Connection error: ${err.message}`}
     >
