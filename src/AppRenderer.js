@@ -5,31 +5,46 @@ import { Provider } from 'react-redux';
 import { configureStore } from './redux/store';
 
 
-import Web3 from 'web3';
-import Web3Provider from 'react-web3-provider';
-import Portis from '@portis/web3';
+// import Web3 from 'web3';
+import { Web3ReactProvider } from '@web3-react/core'
+// import Portis from '@portis/web3';
 import reportWebVitals from './reportWebVitals';
 import IExecProvider from './provider/IExecProvider';
 
+import { Web3Provider } from '@ethersproject/providers'
+
+function getLibrary(provider, connector) {
+  const library = new Web3Provider(provider)
+  library.pollingInterval = 12000
+  return library
+}
+
 const App = React.lazy(() => import(/* webpackChunkName: "App" */'./App' ));
+
+// ReactDOM.render(
+//   <React.StrictMode>
+//   <Provider store={configureStore()}>
+//     <Web3ReactProvider getLibrary={getLibrary}>
+//       <IExecProvider>
+//         <App />
+//       </IExecProvider>
+//     </Web3ReactProvider>
+//     </Provider>
+//   </React.StrictMode>,
+//   document.getElementById('root')
+// );
+
+
 
 ReactDOM.render(
   <Provider store={configureStore()}>
-      <Web3Provider
-        defaultProvider={(cb) => {
-             const ethProvider = new Portis("90c7b0fc-d9d2-4879-b67b-53f3fb651609", "goerli").provider;
-             ethProvider.isMetaMask = true;
-             return cb(new Web3(ethProvider));
-        }}
-        loading="Loading..."
-        error={(err) => `Connection error: ${err.message}`}
-    >
+    <Web3ReactProvider getLibrary={getLibrary}>
         <IExecProvider>
         <Suspense fallback={<div className="loading" />}>
           <App />
         </Suspense>
       </IExecProvider>
-    </Web3Provider>
+    </Web3ReactProvider>
   </Provider>,
   document.getElementById('root')
 );

@@ -15,7 +15,7 @@ class OrderDetails extends Component {
   }
 
   render() {
-      const { web3State, web3, loading } = this.props;
+      const { loading } = this.props;
       return (
       <div className="App">
         <header className="App-header">

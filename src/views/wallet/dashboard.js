@@ -10,6 +10,7 @@ class Dashboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
+        chainId: "",
         address: "",
         nativeWallet: "",
         rlcWallet: "",
@@ -18,16 +19,10 @@ class Dashboard extends Component {
   }
 
   render() {
-      const { web3State, web3, loading, address, nativeWallet, rlcWallet, balance, data } = this.props;
+      const { loading, chainId, address, nativeWallet, rlcWallet, balance, data } = this.props;
       console.log(data);
       return (
         <div>
-          <div id="loader_div" class="loader_div">
-              {web3State.isConnected && "Connected!\n"}
-              {web3State.isLoading && "Loading...\n"}
-              {web3State.error && `Connection error: ${web3State.error.message}\n`}
-              Web3 version: {web3.version}
-            </div>
             { loading && (
               <div>
                 Contacting provider...
@@ -42,6 +37,7 @@ class Dashboard extends Component {
           </Row>
           <Row>
             <Colxx xxs="12" className="mb-4">
+              <p>chain: {chainId}</p>
               <p>Address: {address}</p>
               <p>Native Wallet: {nativeWallet}</p>
               <p>RLC Wallet: {rlcWallet}</p>

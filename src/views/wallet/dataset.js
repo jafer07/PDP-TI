@@ -17,16 +17,10 @@ class DataSet extends Component {
   render() {
     const { handleCountUserDatasets,  handleShowUserDatasets, handleShowUserDatasetsByAddress,
       handleDeployDataset, handlePublishDataset, handleUnpublishDataset, handlePushSecret,
-       web3State, web3, loading } = this.props;
+      loading } = this.props;
       return (
       <div className="App">
         <header className="App-header">
-        <div id="loader_div" class="loader_div">
-            {web3State.isConnected && "Connected!\n"}
-            {web3State.isLoading && "Loading...\n"}
-            {web3State.error && `Connection error: ${web3State.error.message}\n`}
-            Web3 version: {web3.version}
-          </div>
           { loading && (
             <div>
               Contacting provider...
@@ -101,31 +95,31 @@ class DataSet extends Component {
                  <div id="datasets-deploy-output"></div>
                 </div>
 
-                <hr />
-                <h2>Push Dataset Secret</h2>
-                  <div class="container">
+              <hr />
+              <h2>Push Dataset Secret</h2>
+                <div class="container">
+                 <div>
                    <div>
-                     <div>
-                       <label for="dataset-deployed-address-input">Dataset Address : </label>
-                       <input
-                         id="dataset-deployed-address-input"
-                         type="text"
-                         placeholder="Dataset Address"
-                       />
-                     </div>
-                     <div>
-                       <label for="dataset-deployed-Keystore">Dataset Keystore : </label>
-                       <input
-                         id="dataset-deployed-keystore-input"
-                         type="text"
-                         placeholder="Dataset Keystore"
-                       />
-                     </div>
-                     <button id="dataset-push-secret-button" onClick={handlePushSecret}>Push DATASET Secret : </button>
+                     <label for="dataset-deployed-address-input">Dataset Address : </label>
+                     <input
+                       id="dataset-deployed-address-input"
+                       type="text"
+                       placeholder="Dataset Address"
+                     />
                    </div>
-                   <label id="dataset-push-secret-error" class="error"></label>
-                   <div id="dataset-push-secret-output"></div>
-                  </div>
+                   <div>
+                     <label for="dataset-deployed-Keystore">Dataset Keystore : </label>
+                     <input
+                       id="dataset-deployed-keystore-input"
+                       type="text"
+                       placeholder="Dataset Keystore"
+                     />
+                   </div>
+                   <button id="dataset-push-secret-button" onClick={handlePushSecret}>Push DATASET Secret : </button>
+                 </div>
+                 <label id="dataset-push-secret-error" class="error"></label>
+                 <div id="dataset-push-secret-output"></div>
+                </div>
 
               <hr />
               <h2>Sell dataset</h2>

@@ -1,6 +1,7 @@
 import { withIexec } from '../../provider/IExecProvider';
 import AppLayout from '../../layout/AppLayout';
 import React, { Suspense, useEffect, useState } from 'react';
+import { useWeb3React } from '@web3-react/core'
 import { utils } from "iexec";
 import {
   BrowserRouter as Router,
@@ -36,7 +37,9 @@ const ViewDetails = React.lazy(() =>
 );
 
 function App(props) {
-    const { web3, web3State, iexec, match } = props;
+    // eslint-disable-next-line
+    const { iexec, match } = props;
+    const { chainId } = useWeb3React();
     const [ address, setAddress ] = useState("");
     const [ wallet, setWallet ] = useState("");
     const [ rlcWallet, setRLCWallet ] = useState("");
@@ -646,27 +649,27 @@ function App(props) {
             <Switch>
               <Route
                 path={`${match.url}/dashboard`}
-                render={props => <ViewDashboard web3State={web3State} web3={web3} loading={loading} address = {address} nativeWallet = {wallet} rlcWallet = {rlcWallet} balance = {balance} />}
+                render={props => <ViewDashboard loading={loading} chainId = {chainId} address = {address} nativeWallet = {wallet} rlcWallet = {rlcWallet} balance = {balance} />}
               />
               <Route
                 path={`${match.url}/account`}
-                render={props => <ViewAccount web3State={web3State} web3={web3} loading={loading} handleDeposit = {handleDeposit} handleWithdraw = {handleWithdraw} />}
+                render={props => <ViewAccount loading={loading} handleDeposit = {handleDeposit} handleWithdraw = {handleWithdraw} />}
               />
               <Route
                 path={`${match.url}/order`}
-                render={props => <ViewOrder web3State={web3State} web3={web3} loading={loading} />}
+                render={props => <ViewOrder loading={loading} />}
               />
               <Route
                 path={`${match.url}/dataset`}
-                render={props => <ViewDataSet handleCountUserDatasets={handleCountUserDatasets} handleShowUserDatasets={handleShowUserDatasets} handleShowUserDatasetsByAddress={handleShowUserDatasetsByAddress} handleDeployDataset={handleDeployDataset} handlePushSecret={handlePushSecret} handlePublishDataset={handlePublishDataset} handleUnpublishDataset={handleUnpublishDataset} web3State={web3State} web3={web3} loading={loading} />}
+                render={props => <ViewDataSet handleCountUserDatasets={handleCountUserDatasets} handleShowUserDatasets={handleShowUserDatasets} handleShowUserDatasetsByAddress={handleShowUserDatasetsByAddress} handleDeployDataset={handleDeployDataset} handlePushSecret={handlePushSecret} handlePublishDataset={handlePublishDataset} handleUnpublishDataset={handleUnpublishDataset} loading={loading} />}
               />
               <Route
                 path={`${match.url}/request`}
-                render={props => <ViewRequest web3State={web3State} web3={web3} loading={loading} />}
+                render={props => <ViewRequest loading={loading} />}
               />
               <Route
                 path={`${match.url}/apps`}
-                render={props => <ViewApps handleCountApps={handleCountApps} handleShowAppsByIndex={handleShowAppsByIndex} handleShowAppsByAddress={handleShowAppsByAddress} handleAppDeploy={handleAppDeploy} handleAppRun={handleAppRun} web3State={web3State} web3={web3} loading={loading} />}
+                render={props => <ViewApps handleCountApps={handleCountApps} handleShowAppsByIndex={handleShowAppsByIndex} handleShowAppsByAddress={handleShowAppsByAddress} handleAppDeploy={handleAppDeploy} handleAppRun={handleAppRun} loading={loading} />}
               />
               <Route
                 path="/details"

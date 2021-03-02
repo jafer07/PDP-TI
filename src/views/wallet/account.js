@@ -15,16 +15,10 @@ class AccountDetails extends Component {
   }
 
   render() {
-    const { web3State, web3, loading, handleDeposit, handleWithdraw } = this.props;
+    const { loading, handleDeposit, handleWithdraw } = this.props;
       return (
       <div className="App">
         <header className="App-header">
-        <div id="loader_div" class="loader_div">
-            {web3State.isConnected && "Connected!\n"}
-            {web3State.isLoading && "Loading...\n"}
-            {web3State.error && `Connection error: ${web3State.error.message}\n`}
-            Web3 version: {web3.version}
-          </div>
           { loading && (
             <div>
               Contacting provider...
