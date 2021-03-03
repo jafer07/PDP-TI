@@ -4,6 +4,7 @@ import IntlMessages from "../../helpers/IntlMessages";
 import { Colxx, Separator } from "../../components/common/CustomBootstrap";
 import Breadcrumb from "../../containers/navs/Breadcrumb";
 import { withIexec } from '../../provider/IExecProvider';
+import { BasicTable } from '../../components/BasicTable'
 import "iexec";
 
 class DataSet extends Component {
@@ -44,13 +45,16 @@ class DataSet extends Component {
               <hr />
               <div id="ops">
               <h3>Datasets</h3>
+                
                  <div class="container">
                   <div style={divparallelstyle}> <label id="datasets-count-error" class="error"></label> </div>
                   <div style={divparallelstyle}>  <button id="datasets-count-button" onClick={handleCountUserDatasets}>Refresh</button> </div>
                   <div style={divparallelstyle}> <div id="datasets-count-output">{datasetCount}</div>
-                  </div>
+                  </div> 
 
+                  <BasicTable />
                  </div>
+                 
               <hr />
 
               <h3>Deploy dataset</h3>
