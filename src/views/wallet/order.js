@@ -6,16 +6,35 @@ import Breadcrumb from "../../containers/navs/Breadcrumb";
 import { withIexec } from '../../provider/IExecProvider';
 import "iexec";
 
+import styled from 'styled-components';
+
+// import { Table } from '../../table';
+// import { Styles } from '../../table';
+// import makeData from '../../makeData';
+
 class OrderDetails extends Component {
   constructor(props) {
     super(props)
     this.state = {
-        address: ""
+        address: "",
     };
+  }
+
+componentDidMount() {
+      // send HTTP request
+      // save it to the state
+      fetch('http://0.0.0.0:9000/pdp/datasets')
+      .then(res => res.json())
+      .then((data) => {
+        this.setState({ datasets: data })
+      })
+      .catch(console.log)
   }
 
   render() {
       const { loading } = this.props;
+      const Datasets = this.state.datasets;
+      console.log(Datasets)
       return (
       <div className="App">
         <header className="App-header">
@@ -26,8 +45,49 @@ class OrderDetails extends Component {
           )}
           { !loading && (
             <div>
-              <h2>Patient Data Management Portal</h2>
+            <h2>Patient Data Privacy Portal</h2>
               <hr />
+              <div>
+                  <h2>My Datasets</h2>
+
+                  <table>
+                    <tr>
+                      <th>Company</th>
+                      <th>Contact</th>
+                      <th>Country</th>
+                    </tr>
+                    <tr>
+                      <td>Alfreds Futterkiste</td>
+                      <td>Maria Anders</td>
+                      <td>Germany</td>
+                    </tr>
+                    <tr>
+                      <td>Centro comercial Moctezuma</td>
+                      <td>Francisco Chang</td>
+                      <td>Mexico</td>
+                    </tr>
+                    <tr>
+                      <td>Ernst Handel</td>
+                      <td>Roland Mendel</td>
+                      <td>Austria</td>
+                    </tr>
+                    <tr>
+                      <td>Island Trading</td>
+                      <td>Helen Bennett</td>
+                      <td>UK</td>
+                    </tr>
+                    <tr>
+                      <td>Laughing Bacchus Winecellars</td>
+                      <td>Yoshi Tannamuri</td>
+                      <td>Canada</td>
+                    </tr>
+                    <tr>
+                      <td>Magazzini Alimentari Riuniti</td>
+                      <td>Giovanni Rovelli</td>
+                      <td>Italy</td>
+                    </tr>
+                  </table>
+              </div>
               <div id="ops">
                 <h2>Orderbook</h2>
                   <div class="container">

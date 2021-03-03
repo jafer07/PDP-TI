@@ -44,6 +44,8 @@ function App(props) {
     const [ wallet, setWallet ] = useState("");
     const [ rlcWallet, setRLCWallet ] = useState("");
     const [ balance, setBalance ] = useState("");
+    const [ datasetCount, setDatasetCount ] = useState("");
+    const [ appCount, setAppCount ] = useState("");
 
     const [ loading, setLoading ] = useState(true);
     let [ amount, setAmount ] = useState("");
@@ -136,7 +138,6 @@ function App(props) {
     const appRunError = document.getElementById("app-run-error");
     const appRunOutput = document.getElementById("app-run-output");
 
-
     useEffect(() => {
       async function fetchData() {
         setLoading(true);
@@ -160,6 +161,27 @@ function App(props) {
         setLoading(false);
 
         setBalance(accountOutputText);
+
+
+        let datasetCountResponse = "";
+        let appCountResponse = "";
+        try {
+          const d_count = await iexec.dataset.countUserDatasets(
+            await iexec.wallet.getAddress()
+          );
+
+          datasetCountResponse = `TOTAL DEPLOYED DATASETS: ${d_count}`;
+          const a_count = await iexec.app.countUserApps(
+            await iexec.wallet.getAddress()
+          );
+          appCountResponse = `TOTAL DEPLOYED APPLICATIONs: ${a_count}`;
+
+        } catch (error) {
+        } finally {
+
+          setDatasetCount(datasetCountResponse);
+          setAppCount(appCountResponse);
+        }
       }
       fetchData();
       // refreshUser(iexec);
@@ -236,13 +258,15 @@ function App(props) {
         const count = await iexec.dataset.countUserDatasets(
           await iexec.wallet.getAddress()
         );
-        datasetsCountOutput.innerText = `total deployed datasets ${count}`;
+        datasetsCountOutput.innerText = `TOTAL DEPLOYED DATASETS: ${count}`;
       } catch (error) {
         datasetsCountError.innerText = error;
       } finally {
         datasetsCountButton.disabled = false;
       }
     }
+
+
 
     async function handleShowUserDatasets() {
       try {
@@ -463,7 +487,7 @@ function App(props) {
             const count = await iexec.app.countUserApps(
               await iexec.wallet.getAddress()
             );
-            appsCountOutput.innerText = `total deployed apps ${count}`;
+            appsCountOutput.innerText = `TOTAL DEPLOYED APPLICATIONS: ${count}`;
 
           } catch (error) {
             appsCountError.innerText = error;
@@ -640,6 +664,51 @@ function App(props) {
       }
     }
 
+    function createDataset(param) {
+
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: param })
+      };
+
+      return fetch("http://localhost:9000/pdp/", requestOptions)
+      .then(response => response.json())
+      .then(data => this.setState({ postId: data.id }));
+    }
+
+    function createDatasetRequest(param) {
+
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: param })
+      };
+
+      return fetch("http://localhost:9000/pdp/", requestOptions)
+      .then(response => response.json())
+      .then(data => this.setState({ postId: data.id }));
+    }
+
+    // function fetchDatasets(param) {
+    //   // param is a highlighted word from the user before it clicked the button
+    //   return fetch("https://api.com/?param=" + param);
+    // }
+    //
+    // function fetchPatientDatasets(param) {
+    //   // param is a highlighted word from the user before it clicked the button
+    //   return fetch("https://api.com/?param=" + param);
+    // }
+    //
+    // function fetchApplications() {
+    //   // param is a highlighted word from the user before it clicked the button
+    //   return fetch("https://api.com/?param=" + param);
+    // }
+    //
+    // function fetchResearcherApplications(param) {
+    //   // param is a highlighted word from the user before it clicked the button
+    //   return fetch("https://api.com/?param=" + param);
+    // }
 
     return (
         <AppLayout>
@@ -661,7 +730,7 @@ function App(props) {
               />
               <Route
                 path={`${match.url}/dataset`}
-                render={props => <ViewDataSet handleCountUserDatasets={handleCountUserDatasets} handleShowUserDatasets={handleShowUserDatasets} handleShowUserDatasetsByAddress={handleShowUserDatasetsByAddress} handleDeployDataset={handleDeployDataset} handlePushSecret={handlePushSecret} handlePublishDataset={handlePublishDataset} handleUnpublishDataset={handleUnpublishDataset} loading={loading} />}
+                render={props => <ViewDataSet datasetCount={datasetCount}  handleCountUserDatasets={handleCountUserDatasets} handleShowUserDatasets={handleShowUserDatasets} handleShowUserDatasetsByAddress={handleShowUserDatasetsByAddress} handleDeployDataset={handleDeployDataset} handlePushSecret={handlePushSecret} handlePublishDataset={handlePublishDataset} handleUnpublishDataset={handleUnpublishDataset} loading={loading} />}
               />
               <Route
                 path={`${match.url}/request`}
@@ -669,7 +738,7 @@ function App(props) {
               />
               <Route
                 path={`${match.url}/apps`}
-                render={props => <ViewApps handleCountApps={handleCountApps} handleShowAppsByIndex={handleShowAppsByIndex} handleShowAppsByAddress={handleShowAppsByAddress} handleAppDeploy={handleAppDeploy} handleAppRun={handleAppRun} loading={loading} />}
+                render={props => <ViewApps  handleShowAppsByIndex={handleShowAppsByIndex} handleShowAppsByAddress={handleShowAppsByAddress} handleAppDeploy={handleAppDeploy} handleAppRun={handleAppRun} loading={loading} />}
               />
               <Route
                 path="/details"

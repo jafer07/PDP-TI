@@ -20,6 +20,10 @@ class Dashboard extends Component {
 
   render() {
       const { loading, chainId, address, nativeWallet, rlcWallet, balance, data } = this.props;
+      let {chain} = "";
+      if (chainId == 5)
+        chain = "Goerli";
+
       console.log(data);
       return (
         <div>
@@ -29,22 +33,23 @@ class Dashboard extends Component {
               </div>
             )}
             { !loading &&(
-          <Fragment>
-          <Row>
-            <Colxx xxs="12">
-              <Separator className="mb-5" />
-            </Colxx>
-          </Row>
-          <Row>
-            <Colxx xxs="12" className="mb-4">
-              <p>chain: {chainId}</p>
-              <p>Address: {address}</p>
-              <p>Native Wallet: {nativeWallet}</p>
-              <p>RLC Wallet: {rlcWallet}</p>
-              <p>Balance: {balance}</p>
-            </Colxx>
-          </Row>
-        </Fragment>
+              <div>
+              <h2>Patient Data Privacy Portal</h2>
+              <hr />
+              <h3>Dashboard</h3>
+                <Fragment>
+                <Row>
+                  <Colxx xxs="12" className="mb-4">
+                    <p><b>Chain:</b>	 {chain}</p>
+                    <p><b>Address:</b>	 {address}</p>
+                    <p><b>Native:</b>	 {nativeWallet}</p>
+                    <p><b>RLC Wallet:</b>	 {rlcWallet}</p>
+                    <p><b>Balance:</b>	 {balance}</p>
+                  </Colxx>
+                </Row>
+              </Fragment>
+
+              </div>
       )}
       </div>
       )

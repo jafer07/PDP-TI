@@ -27,10 +27,10 @@ class Apps extends Component {
             )}
             { !loading && (
               <div>
-                <h2>Patient Data Management Portal</h2>
+              <h2>Patient Data Privacy Portal</h2>
                 <hr />
                 <div id="ops">
-                <h2>Apps</h2>
+                <h2>My Apps</h2>
                   <div class="container">
                     <button id="apps-count-button" onClick={handleCountApps}>COUNT USER APPS</button>
                     <label id="apps-count-error" class="error"></label>
@@ -50,6 +50,7 @@ class Apps extends Component {
                     <label id="apps-showindex-error" class="error"></label>
                     <div class="scrollable" id="apps-showindex-output"></div>
                   </div>
+{/*
                   <div class="container">
                     <div>
                       <label for="apps-address-input">App address</label>
@@ -63,7 +64,7 @@ class Apps extends Component {
                     <label id="apps-show-error" class="error"></label>
                     <div class="scrollable" id="apps-details-output"></div>
                   </div>
-
+*/}
                 <hr />
                 <h2>Deploy app</h2>
                   <div class="container">
@@ -106,45 +107,46 @@ class Apps extends Component {
                     <label id="apps-deploy-error" class="error"></label>
                     <div id="apps-deploy-output"></div>
                   </div>
-                  <hr />
-                  <h2>Run app</h2>
-                  <div class="container">
+                </div>
+
+                <hr />
+
+                <h2>Run app</h2>
+                <div class="container">
+                  <div>
                     <div>
-                      <div>
-                        <label for="app-run-dataset-address-input">Dataset address</label>
-                        <input
-                          id="app-run-dataset-address-input"
-                          type="text"
-                          placeholder="App address"
-                        />
-                      </div>
-                      <div>
-                        <label for="app-run-price-input">Price</label>
-                        <input
-                          id="app-run-price-input"
-                          type="number"
-                          min="0"
-                          placeholder="Price"
-                        />
-                      </div>
-                      <div>
-                        <label for="app-run-address-input">App address</label>
-                        <input
-                          id="buy-appaddress-input"
-                          type="text"
-                          placeholder="App address"
-                        />
-                      </div>
-                      <button id="app-run-button" onClick={handleAppRun}>Run App</button>
+                      <label for="app-run-dataset-address-input">Dataset address</label>
+                      <input
+                        id="app-run-dataset-address-input"
+                        type="text"
+                        placeholder="App address"
+                      />
                     </div>
-                    <label id="app-run-error" class="error"></label>
-                    <div id="app-run-output"></div>
+                    <div>
+                      <label for="app-run-price-input">Price</label>
+                      <input
+                        id="app-run-price-input"
+                        type="number"
+                        min="0"
+                        placeholder="Price"
+                      />
+                    </div>
+                    <div>
+                      <label for="app-run-address-input">App address</label>
+                      <input
+                        id="buy-appaddress-input"
+                        type="text"
+                        placeholder="App address"
+                      />
+                    </div>
+                    <button id="app-run-button" onClick={handleAppRun}>Run App</button>
                   </div>
+                  <label id="app-run-error" class="error"></label>
+                  <div id="app-run-output"></div>
+                </div>
 
                 <hr />
-                  </div>
 
-                <hr />
               </div>
             </div>
             )}

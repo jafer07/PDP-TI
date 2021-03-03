@@ -26,13 +26,15 @@ class AccountDetails extends Component {
           )}
           { !loading && (
             <div>
-              <h2>Patient Data Management Portal</h2>
+              <h2>Patient Data Privacy Portal</h2>
               <hr />
               <div id="ops">
-                <h2>Account</h2>
+                <h3>Account</h3>
+
+                  <h6>Deposit</h6>
                   <div class="container">
                     <div>
-                      <label for="account-deposit-input">Amount : </label>
+                      <label for="account-deposit-input">Amount    |</label>
                       <input
                         id="account-deposit-input"
                         type="number"
@@ -43,9 +45,11 @@ class AccountDetails extends Component {
                     </div>
                     <label id="account-deposit-error" class="error"></label>
                   </div>
+
+                  <h6>Withdraw</h6>
                   <div class="container">
                     <div>
-                      <label for="account-withdraw-input">Amount : </label>
+                      <label for="account-withdraw-input">Amount    |</label>
                       <input
                         id="account-withdraw-input"
                         type="number"

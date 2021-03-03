@@ -15,9 +15,21 @@ class DataSet extends Component {
   }
 
   render() {
-    const { handleCountUserDatasets,  handleShowUserDatasets, handleShowUserDatasetsByAddress,
+    const { datasetCount, handleCountUserDatasets,  handleShowUserDatasets, handleShowUserDatasetsByAddress,
       handleDeployDataset, handlePublishDataset, handleUnpublishDataset, handlePushSecret,
       loading } = this.props;
+
+    const count = {datasetCount};
+    console.log(count);
+    const divparallelstyle = {
+      display: "inline-block",
+      padding: "5px"
+    };
+
+    const divfieldstyle = {
+      padding: "5px"
+    };
+
       return (
       <div className="App">
         <header className="App-header">
@@ -28,67 +40,55 @@ class DataSet extends Component {
           )}
           { !loading && (
             <div>
-              <h2>Patient Data Management Portal</h2>
+            <h2>Patient Data Privacy Portal</h2>
               <hr />
               <div id="ops">
-              <h2>Datasets</h2>
+              <h3>Datasets</h3>
                  <div class="container">
-                   <button id="datasets-count-button" onClick={handleCountUserDatasets}>COUNT USER DATASETS</button>
-                   <label id="datasets-count-error" class="error"></label>
-                   <div id="datasets-count-output"></div>
-                 </div>
-                 <div class="container">
-                   <div>
-                     <label for="datasets-index-input">Dataset index : </label>
-                     <input
-                       id="datasets-index-input"
-                       type="number"
-                       min="1"
-                       placeholder="Dataset index"
-                     />
-                     <button id="datasets-showindex-button" onClick={handleShowUserDatasets}>
-                       SHOW USER DEPLOYED DATASET(By Index)
-                     </button>
-                   </div>
-                   <label id="datasets-showindex-error" class="error"></label>
-                   <div class="scrollable" id="datasets-showindex-output"></div>
-                 </div>
-                 <div class="container">
-                   <div>
-                     <label for="datasets-address-input">Dataset address : </label>
-                     <input
-                       id="datasets-address-input"
-                       type="text"
-                       placeholder="Dataset address"
-                     />
-                     <button id="datasets-show-button" onClick={handleShowUserDatasetsByAddress}>
-                     SHOW USER DEPLOYED DATASET(By Address)
-                    </button>
-                   </div>
-                   <label id="datasets-show-error" class="error"></label>
-                   <div class="scrollable" id="datasets-details-output"></div>
-                 </div>
+                  <div style={divparallelstyle}> <label id="datasets-count-error" class="error"></label> </div>
+                  <div style={divparallelstyle}>  <button id="datasets-count-button" onClick={handleCountUserDatasets}>Refresh</button> </div>
+                  <div style={divparallelstyle}> <div id="datasets-count-output">{datasetCount}</div>
+                  </div>
 
+                 </div>
               <hr />
+
               <h2>Deploy dataset</h2>
                 <div class="container">
                  <div>
                    <div>
-                     <label for="datasets-deployname-input">Dataset name : </label>
+                    <div style={divparallelstyle}><label for="datasets-deployname-input">Dataset name : </label></div>
+                    <div style={divparallelstyle}>
                      <input
                        id="datasets-deployname-input"
                        type="text"
                        placeholder="Dataset name"
                      />
-                   </div>
+                     </div>
+                    </div>
+
                    <div>
-                     <label for="datasets-deploymultiaddr-input">Dataset url/ipfs : </label>
-                     <input
-                       id="datasets-deploymultiaddr-input"
-                       type="text"
-                       placeholder="Dataset multiaddr"
-                     />
+                    <div style={divparallelstyle}> <label for="datasets-deploymultiaddr-input">Dataset url/ipfs : </label></div>
+                    <div style={divparallelstyle}>
+                      <input
+                        id="datasets-deploymultiaddr-input"
+                        type="text"
+                        placeholder="Dataset multiaddr"
+                      />
+                    </div>
                    </div>
+
+                   <div>
+                    <div style={divparallelstyle}><label for="dataset-deployed-Keystore">Dataset Keystore : </label></div>
+                    <div style={divparallelstyle}>
+                      <input
+                        id="dataset-deployed-keystore-input"
+                        type="text"
+                        placeholder="Dataset Keystore"
+                      />
+                    </div>
+                   </div>
+
                    <button id="datasets-deploy-button" onClick={handleDeployDataset}>DEPLOY DATASET : </button>
                  </div>
                  <label id="datasets-deploy-error" class="error"></label>
@@ -96,6 +96,7 @@ class DataSet extends Component {
                 </div>
 
               <hr />
+{/*
               <h2>Push Dataset Secret</h2>
                 <div class="container">
                  <div>
@@ -120,8 +121,9 @@ class DataSet extends Component {
                  <label id="dataset-push-secret-error" class="error"></label>
                  <div id="dataset-push-secret-output"></div>
                 </div>
-
               <hr />
+*/}
+
               <h2>Sell dataset</h2>
                 <div class="container">
                  <div>
@@ -164,6 +166,45 @@ class DataSet extends Component {
                  <label id="sell-publish-error" class="error"></label>
                  <div id="sell-publish-output"></div>
                 </div>
+              <hr />
+
+              <h2>Deployed Dataset Information</h2>
+              <div class="container">
+                <div>
+                  <label for="datasets-index-input">Dataset index : </label>
+                  <input
+                    id="datasets-index-input"
+                    type="number"
+                    min="1"
+                    placeholder="Dataset index"
+                  />
+                  <button id="datasets-showindex-button" onClick={handleShowUserDatasets}>
+                    SHOW USER DEPLOYED DATASET(By Index)
+                  </button>
+                </div>
+                <label id="datasets-showindex-error" class="error"></label>
+                <div class="scrollable" id="datasets-showindex-output"></div>
+              </div>
+{/*
+              <div class="container">
+                <div>
+                  <label for="datasets-address-input">Dataset address : </label>
+                  <input
+                    id="datasets-address-input"
+                    type="text"
+                    placeholder="Dataset address"
+                  />
+                  <button id="datasets-show-button" onClick={handleShowUserDatasetsByAddress}>
+                  SHOW USER DEPLOYED DATASET(By Address)
+                 </button>
+                </div>
+                <label id="datasets-show-error" class="error"></label>
+                <div class="scrollable" id="datasets-details-output"></div>
+              </div>
+*/}
+              <hr />
+
+              <h2>Unpublish dataset</h2>
                 <div class="container">
                  <div>
                    <label for="sell-unpublishhash-input">Order hash : </label>
@@ -193,6 +234,7 @@ class DataSet extends Component {
                 </div>
 
               <hr />
+
              </div>
           </div>
           )}
