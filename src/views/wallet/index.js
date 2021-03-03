@@ -50,6 +50,8 @@ function App(props) {
     const [ loading, setLoading ] = useState(true);
     let [ amount, setAmount ] = useState("");
 
+    const [files, setFiles] = useState([]);
+
     const networkOutput = document.getElementById("network");
     const addressOutput = document.getElementById("address");
     const rlcWalletOutput = document.getElementById("rlc-wallet");
@@ -137,6 +139,9 @@ function App(props) {
     const appRunButton = document.getElementById("app-run-button");
     const appRunError = document.getElementById("app-run-error");
     const appRunOutput = document.getElementById("app-run-output");
+
+    const hiddenDataFileInput = React.useRef(null);
+    const hiddenKeyFileInput = React.useRef(null);
 
     useEffect(() => {
       async function fetchData() {
@@ -241,14 +246,6 @@ function App(props) {
       setBalance(accountOutputText);
     }
 
-    // async function handleWithdraw() {
-    //   var amount = document.getElementById('amount-value').value;
-    //   await iexec.account.deposit(amount);
-    //
-    //   var balanceTemp = await iexec.account.checkBalance(address);
-    //   setBalance(balanceTemp.stake.toString());
-    // }
-
     async function handleCountUserDatasets() {
 
       try {
@@ -265,8 +262,6 @@ function App(props) {
         datasetsCountButton.disabled = false;
       }
     }
-
-
 
     async function handleShowUserDatasets() {
       try {
@@ -301,26 +296,88 @@ function App(props) {
         }
     }
 
-    async function handleDeployDataset() {
+    async function handleCountApps() {
       try {
+          appsCountButton.disabled = true;
+          appsCountError.innerText = "";
+          appsCountOutput.innerText = "";
+          const count = await iexec.app.countUserApps(
+            await iexec.wallet.getAddress()
+          );
+          appsCountOutput.innerText = `TOTAL DEPLOYED APPLICATIONS: ${count}`;
+
+        } catch (error) {
+          appsCountError.innerText = error;
+        } finally {
+          appsCountButton.disabled = false;
+        }
+    }
+// ------- dataset deploy:
+
+    function onFileUpload(event) {
+      event.preventDefault();
+      // Get the file Id
+      let id = event.target.id;
+      // Create an instance of FileReader API
+      let file_reader = new FileReader();
+      // Get the actual file itself
+      let file = event.target.files[0];
+      file_reader.onload = () => {
+      // After uploading the file
+      // appending the file to our state array
+      // set the object keys and values accordingly
+        setFiles([...files, { file_id: id, uploaded_file: file_reader.result }]);
+      };
+     // reading the actual uploaded file
+      file_reader.readAsDataURL(file);
+    }
+
+    function postDatasetToIPFS() {
+
+      var form = new FormData();
+      form.append('data-binary', files[0]);
+
+      return fetch('https://e0nustfzpr:pY8FdMmnzVXzxclz_RuWcJjmqUrNJVyeaAohIbifdhY@e0cl4f1xo2-e0ky84jkon-ipfs.de0-aws.kaleido.io/api/v0/add', {
+       method: 'POST',
+       body: form,
+       }).then(response => {
+         console.log(response)
+       }).catch(error => {
+         console.error(error);
+       })
+    }
+
+    async function handleDeployDataset(e) {
+      try {
+          e.preventDefault();
+          console.log(files);
+
          datasetsDeployButton.disabled = true;
          datasetsDeployError.innerText = "";
          datasetsDeployOutput.innerText = "";
+
          const owner = await iexec.wallet.getAddress();
          const name = datasetsDeployNameInput.value;
-         const multiaddr = datasetsDeployMultiaddrInput.value;
-         const checksum =
-           "0x0000000000000000000000000000000000000000000000000000000000000000"; // not used today
-         const { address } = await iexec.dataset.deployDataset({
+         const checksum ="0x0000000000000000000000000000000000000000000000000000000000000000"; // not used today
+
+         // files[0];
+         // const multiaddr = datasetsDeployMultiaddrInput.value;
+         // upload to ipfs ; the address
+         const ipfsResponse = postDatasetToIPFS();
+         const ipfsURL = "https://e0nustfzpr:pY8FdMmnzVXzxclz_RuWcJjmqUrNJVyeaAohIbifdhY@e0cl4f1xo2-e0ky84jkon-ipfs.de0-aws.kaleido.io/ipfs/";
+         const ipfsHash = "QmeHWkydVczjeWfkd7wsSYXRbXKLyaBMVHw2VbXvqMHFaS";
+
+         const multiaddr = ipfsURL + ipfsHash ;
+         const { datasetAddress } = await iexec.dataset.deployDataset({
            owner,
            name,
            multiaddr,
            checksum
          });
-         datasetsDeployOutput.innerText = `Dataset deployed at address ${address}`;
-         datasetsShowInput.value = address;
-         sellDatasetAddressInput.value = address;
-         orderbookDatasetAddressInput.value = address;
+
+         datasetsDeployOutput.innerText = `Dataset deployed at address ${datasetAddress}`;
+         const pushSecretResponse = pushSecret(datasetAddress,files);
+
          refreshUser(iexec)();
        } catch (error) {
          datasetsDeployError.innerText = error;
@@ -329,9 +386,57 @@ function App(props) {
        }
     }
 
+    async function pushSecret(datasetAddress,files) {
+      let pushSecretResponse = "";
+        try {
+            // const datasetAddress = datasetDeployedAddressInput.value;
+            // const secret = datasetDeployedKeystoreInput.value;
+            const pushed = await iexec.dataset.pushDatasetSecret(
+              datasetAddress,
+              files[1],
+            );
+            pushSecretResponse = JSON.stringify(pushed, null, 2);
+          } catch (error) {
+            pushSecretResponse = error;
+          } finally {
+            return pushSecretResponse;
+          }
+      }
+
+    async function handlePushSecret() {
+        try {
+            datasetPushSecretButton.disabled = true;
+            datasetPushSecretError.innerText = "";
+            datasetPushSecretOutput.innerText = "";
+            // const val = datasetDeployedKeystore.click();
+            // console.log(val);
+            const datasetAddress = datasetDeployedAddressInput.value;
+            const secret = datasetDeployedKeystoreInput.value;
+
+            const pushed = await iexec.dataset.pushDatasetSecret(
+              datasetAddress,
+              secret,
+            );
+            datasetPushSecretOutput.innerText = JSON.stringify(pushed, null, 2);
+            datasetPushSecretOutput.innerText = pushed;
+          } catch (error) {
+            datasetPushSecretError.innerText = error;
+          } finally {
+            datasetPushSecretButton.disabled = false;
+          }
+      }
+
+    async function isSecretExist() {
+      const isSecretSet = await iexec.dataset.checkDatasetSecretExists(
+        '',
+      );
+      console.log('secret exists:', isSecretSet);
+    }
+
+// ------- dataset sell:
     async function handlePublishDataset() {
       try {
-          console.log('heere:');
+
           sellPublishButton.disabled = true;
           sellPublishError.innerText = "";
           sellPublishOutput.innerText = "";
@@ -412,36 +517,6 @@ function App(props) {
         }
     }
 
-    async function isSecretExist() {
-      const isSecretSet = await iexec.dataset.checkDatasetSecretExists(
-        '',
-      );
-      console.log('secret exists:', isSecretSet);
-    }
-
-    async function handlePushSecret() {
-          try {
-              datasetPushSecretButton.disabled = true;
-              datasetPushSecretError.innerText = "";
-              datasetPushSecretOutput.innerText = "";
-              // const val = datasetDeployedKeystore.click();
-              // console.log(val);
-              const datasetAddress = datasetDeployedAddressInput.value;
-              const secret = datasetDeployedKeystoreInput.value;
-
-              const pushed = await iexec.dataset.pushDatasetSecret(
-                datasetAddress,
-                secret,
-              );
-              datasetPushSecretOutput.innerText = JSON.stringify(pushed, null, 2);
-              datasetPushSecretOutput.innerText = pushed;
-            } catch (error) {
-              datasetPushSecretError.innerText = error;
-            } finally {
-              datasetPushSecretButton.disabled = false;
-            }
-        }
-
       async function handleShowAppsByAddress() {
         try {
             appsShowButton.disabled = true;
@@ -479,22 +554,6 @@ function App(props) {
           }
       }
 
-      async function handleCountApps() {
-        try {
-            appsCountButton.disabled = true;
-            appsCountError.innerText = "";
-            appsCountOutput.innerText = "";
-            const count = await iexec.app.countUserApps(
-              await iexec.wallet.getAddress()
-            );
-            appsCountOutput.innerText = `TOTAL DEPLOYED APPLICATIONS: ${count}`;
-
-          } catch (error) {
-            appsCountError.innerText = error;
-          } finally {
-            appsCountButton.disabled = false;
-          }
-      }
 
       async function handleAppDeploy() {
         try {
@@ -730,7 +789,7 @@ function App(props) {
               />
               <Route
                 path={`${match.url}/dataset`}
-                render={props => <ViewDataSet datasetCount={datasetCount}  handleCountUserDatasets={handleCountUserDatasets} handleShowUserDatasets={handleShowUserDatasets} handleShowUserDatasetsByAddress={handleShowUserDatasetsByAddress} handleDeployDataset={handleDeployDataset} handlePushSecret={handlePushSecret} handlePublishDataset={handlePublishDataset} handleUnpublishDataset={handleUnpublishDataset} loading={loading} />}
+                render={props => <ViewDataSet onFileUpload= {onFileUpload} hiddenDataFileInput = {hiddenDataFileInput} hiddenKeyFileInput = {hiddenKeyFileInput} datasetCount={datasetCount}  handleCountUserDatasets={handleCountUserDatasets} handleShowUserDatasets={handleShowUserDatasets} handleShowUserDatasetsByAddress={handleShowUserDatasetsByAddress} handleDeployDataset={handleDeployDataset} handlePushSecret={handlePushSecret} handlePublishDataset={handlePublishDataset} handleUnpublishDataset={handleUnpublishDataset} loading={loading} />}
               />
               <Route
                 path={`${match.url}/request`}
@@ -738,7 +797,7 @@ function App(props) {
               />
               <Route
                 path={`${match.url}/apps`}
-                render={props => <ViewApps  handleShowAppsByIndex={handleShowAppsByIndex} handleShowAppsByAddress={handleShowAppsByAddress} handleAppDeploy={handleAppDeploy} handleAppRun={handleAppRun} loading={loading} />}
+                render={props => <ViewApps  appCount = {appCount} handleShowAppsByIndex={handleShowAppsByIndex} handleShowAppsByAddress={handleShowAppsByAddress} handleAppDeploy={handleAppDeploy} handleAppRun={handleAppRun} loading={loading} />}
               />
               <Route
                 path="/details"

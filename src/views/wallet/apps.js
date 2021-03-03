@@ -16,7 +16,12 @@ class Apps extends Component {
 
   render() {
       //declare variable
-    const { handleCountApps, handleShowAppsByIndex, handleShowAppsByAddress, handleAppDeploy, handleAppRun, loading } = this.props;
+    const { appCount, handleCountApps, handleShowAppsByIndex, handleShowAppsByAddress, handleAppDeploy, handleAppRun, loading } = this.props;
+    const divparallelstyle = {
+      display: "inline-block",
+      padding: "5px"
+    };
+
       return (
         <div className="App">
           <header className="App-header">
@@ -30,25 +35,11 @@ class Apps extends Component {
               <h2>Patient Data Privacy Portal</h2>
                 <hr />
                 <div id="ops">
-                <h2>My Apps</h2>
+                <h3>Applicaitons</h3>
                   <div class="container">
-                    <button id="apps-count-button" onClick={handleCountApps}>COUNT USER APPS</button>
-                    <label id="apps-count-error" class="error"></label>
-                    <div id="apps-count-output"></div>
-                  </div>
-                  <div class="container">
-                    <div>
-                      <label for="apps-index-input">App index</label>
-                      <input
-                        id="apps-index-input"
-                        type="number"
-                        min="0"
-                        placeholder="App index"
-                      />
-                      <button id="apps-showindex-button" onClick={handleShowAppsByIndex}>SHOW USER APP</button>
-                    </div>
-                    <label id="apps-showindex-error" class="error"></label>
-                    <div class="scrollable" id="apps-showindex-output"></div>
+                  <div style={divparallelstyle}><button id="apps-count-button" onClick={handleCountApps}>Refresh</button></div>
+                  <div style={divparallelstyle}><label id="apps-count-error" class="error"></label></div>
+                  <div style={divparallelstyle}><div id="apps-count-output">{appCount}</div></div>
                   </div>
 {/*
                   <div class="container">
@@ -66,42 +57,56 @@ class Apps extends Component {
                   </div>
 */}
                 <hr />
-                <h2>Deploy app</h2>
+                <h3>Deploy app</h3>
                   <div class="container">
                     <div>
                       <div>
-                        <label for="apps-deployname-input">App name</label>
+                      <div style={divparallelstyle}><label for="apps-deployname-input">App name</label></div>
+                      <div style={divparallelstyle}>
                         <input
                           id="apps-deployname-input"
                           type="text"
                           placeholder="App name"
                         />
                       </div>
+
+                      </div>
                       <div>
-                        <label for="apps-deploymultiaddr-input">App image</label>
+                      <div style={divparallelstyle}><label for="apps-deploymultiaddr-input">App image</label></div>
+                      <div style={divparallelstyle}>
                         <input
                           id="apps-deploymultiaddr-input"
                           type="text"
                           placeholder="App multiaddr"
                         />
                       </div>
+
+                      </div>
+
                       <div>
                         <div>
-                          <label for="app-deploy-mrenclave-input">Dataset address</label>
+                        <div style={divparallelstyle}><label for="app-deploy-mrenclave-input">Dataset address</label></div>
+                        <div style={divparallelstyle}>
                           <input
                             id="app-deploy-mrenclave-input"
                             type="text"
                             placeholder="mr enclave"
                           />
                         </div>
+
+                        </div>
+
                       <div>
-                        <label for="apps-deploychecksum-input">App checksum</label>
+                      <div style={divparallelstyle}><label for="apps-deploychecksum-input">App checksum</label></div>
+                      <div style={divparallelstyle}>
                         <input
                           id="apps-deploychecksum-input"
                           type="text"
                           placeholder="App checksum"
                         />
                       </div>
+                      </div>
+
                       <button id="apps-deploy-button" onClick={handleAppDeploy}>DEPLOY APP</button>
                     </div>
                     <label id="apps-deploy-error" class="error"></label>
@@ -111,19 +116,23 @@ class Apps extends Component {
 
                 <hr />
 
-                <h2>Run app</h2>
+                <h3>Run app</h3>
                 <div class="container">
                   <div>
                     <div>
-                      <label for="app-run-dataset-address-input">Dataset address</label>
-                      <input
-                        id="app-run-dataset-address-input"
-                        type="text"
-                        placeholder="App address"
-                      />
+                      <div style={divparallelstyle}><label for="app-run-dataset-address-input">Dataset address</label></div>
+                      <div style={divparallelstyle}>
+                        <input
+                          id="app-run-dataset-address-input"
+                          type="text"
+                          placeholder="App address"
+                        />
+                      </div>
                     </div>
+
                     <div>
-                      <label for="app-run-price-input">Price</label>
+                    <div style={divparallelstyle}><label for="app-run-price-input">Price</label></div>
+                    <div style={divparallelstyle}>
                       <input
                         id="app-run-price-input"
                         type="number"
@@ -131,22 +140,46 @@ class Apps extends Component {
                         placeholder="Price"
                       />
                     </div>
+                    </div>
+
                     <div>
-                      <label for="app-run-address-input">App address</label>
+                    <div style={divparallelstyle}><label for="app-run-address-input">App address</label></div>
+                    <div style={divparallelstyle}>
                       <input
                         id="buy-appaddress-input"
                         type="text"
                         placeholder="App address"
                       />
                     </div>
+                    </div>
+
                     <button id="app-run-button" onClick={handleAppRun}>Run App</button>
+
                   </div>
                   <label id="app-run-error" class="error"></label>
                   <div id="app-run-output"></div>
                 </div>
 
                 <hr />
+                <h3>Deployed Applicaiton Information</h3>
+                <div class="container">
+                  <div>
+                  <div style={divparallelstyle}><label for="apps-index-input">App index</label></div>
+                  <div style={divparallelstyle}>
+                    <input
+                      id="apps-index-input"
+                      type="number"
+                      min="0"
+                      placeholder="App index"
+                    />
+                  </div>
 
+                    <button id="apps-showindex-button" onClick={handleShowAppsByIndex}>SHOW USER APP</button>
+                    
+                  </div>
+                  <label id="apps-showindex-error" class="error"></label>
+                  <div class="scrollable" id="apps-showindex-output"></div>
+                </div>
               </div>
             </div>
             )}

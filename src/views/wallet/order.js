@@ -34,7 +34,19 @@ componentDidMount() {
   render() {
       const { loading } = this.props;
       const Datasets = this.state.datasets;
-      console.log(Datasets)
+      console.log(Datasets);
+
+      // const tablestyle = {
+      //   display: "inline-block",
+      //   padding: "5px"
+      // };
+      // .table {
+      // 	font-family: arial, sans-serif;
+      // 	border-collapse: collapse;
+      // 	width: 100%;
+      // }
+
+
       return (
       <div className="App">
         <header className="App-header">

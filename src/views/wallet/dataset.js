@@ -15,7 +15,7 @@ class DataSet extends Component {
   }
 
   render() {
-    const { datasetCount, handleCountUserDatasets,  handleShowUserDatasets, handleShowUserDatasetsByAddress,
+    const { onFileUpload, hiddenFileInput, hiddenKeyFileInput, datasetCount, handleCountUserDatasets,  handleShowUserDatasets, handleShowUserDatasetsByAddress,
       handleDeployDataset, handlePublishDataset, handleUnpublishDataset, handlePushSecret,
       loading } = this.props;
 
@@ -53,7 +53,7 @@ class DataSet extends Component {
                  </div>
               <hr />
 
-              <h2>Deploy dataset</h2>
+              <h3>Deploy dataset</h3>
                 <div class="container">
                  <div>
                    <div>
@@ -65,15 +65,16 @@ class DataSet extends Component {
                        placeholder="Dataset name"
                      />
                      </div>
-                    </div>
+                  </div>
+
 
                    <div>
                     <div style={divparallelstyle}> <label for="datasets-deploymultiaddr-input">Dataset url/ipfs : </label></div>
                     <div style={divparallelstyle}>
                       <input
-                        id="datasets-deploymultiaddr-input"
-                        type="text"
-                        placeholder="Dataset multiaddr"
+                        id={1}
+                        type="file"
+                        onChange={onFileUpload}
                       />
                     </div>
                    </div>
@@ -82,9 +83,9 @@ class DataSet extends Component {
                     <div style={divparallelstyle}><label for="dataset-deployed-Keystore">Dataset Keystore : </label></div>
                     <div style={divparallelstyle}>
                       <input
-                        id="dataset-deployed-keystore-input"
-                        type="text"
-                        placeholder="Dataset Keystore"
+                        id={2}
+                        type="file"
+                        onChange={onFileUpload}
                       />
                     </div>
                    </div>
@@ -124,7 +125,7 @@ class DataSet extends Component {
               <hr />
 */}
 
-              <h2>Sell dataset</h2>
+              <h3>Sell dataset</h3>
                 <div class="container">
                  <div>
                    <div>
@@ -168,7 +169,7 @@ class DataSet extends Component {
                 </div>
               <hr />
 
-              <h2>Deployed Dataset Information</h2>
+              <h3>Deployed Dataset Information</h3>
               <div class="container">
                 <div>
                   <label for="datasets-index-input">Dataset index : </label>
